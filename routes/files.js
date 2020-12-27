@@ -117,6 +117,25 @@ router.get("/get/:id", (req, res) => {
 });
 
 /**
+ * DELETE one image of user
+ * @param req { fid, id }
+ * @return
+ */
+router.route("/deleteOne/:fid/user/:id").delete((req, res) => {
+  User.findById(req.params.id)
+    .then((user) => {
+      user.imgs = user.imgs;
+      user.imgs = user.imgs.filter((img) => img._id === req.params.fid);
+      console.log(user.imgs.map((img) => img._id !== req.params.fid));
+      gfs.delete(new mongoose.Types.ObjectId(req.params.fid), (err, data) => {
+        if (err) return res.status(404).json({ err: err.message });
+        res.json("document deleted");
+      });
+    })
+    .catch((err) => res.status(400).json("error: " + err));
+});
+
+/**
  * DELETE existing user
  * @param req { _id }
  * @return
