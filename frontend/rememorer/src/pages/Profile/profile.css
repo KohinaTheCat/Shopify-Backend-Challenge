@@ -10,10 +10,13 @@ p {
   margin: 1rem;
 }
 
-img {
+.rand-img {
   width: 50vh;
   height: 50vh;
   object-fit: cover;
+}
+
+img {
   margin: 0 3rem 0 0;
 }
 
