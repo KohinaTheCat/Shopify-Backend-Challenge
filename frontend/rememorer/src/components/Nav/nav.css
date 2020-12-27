@@ -1,0 +1,20 @@
+.nav {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  height: 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dotted var(--lightpink);
+}
+h2 {
+  margin-left: 1rem;
+  color: var(--coral);
+}
+.el-icon-sunset {
+  margin-right: 1rem;
+  font-size: 3rem;
+  color: var(--coral);
+  opacity: 0.7;
+}
