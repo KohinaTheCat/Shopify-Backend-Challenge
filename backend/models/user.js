@@ -1,10 +1,16 @@
-// schema for a user
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const bcrypt = require("bcrypt");
 
+// to ensure the password is not stored in the DB in plain text
+const bcrypt = require("bcrypt");
 const saltFactor = 10;
 
+/**
+ * Schema for user
+ * @property {String}     _id               username of user
+ * @property {String}     password          password of user
+ * @property {[Object]}   images            array to store user images 
+ */
 const userSchema = new Schema({
   _id: {
     type: String,
@@ -12,11 +18,11 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
+    required: "password is required",
   },
   imgs: [{ _id: String, desc: String}],
 });
 
-/* https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1 */
 //comparing password entered
 userSchema.methods.comparePassword = function (newPass, callBack) {
   bcrypt.compare(newPass, this.password, function (err, isMatch) {

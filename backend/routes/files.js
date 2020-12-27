@@ -1,16 +1,13 @@
-const router = require("express").Router();
 let User = require("../models/user");
-
-//connecting to db, init. gridstorage and creating a storage
+const router = require("express").Router();
 const multer = require("multer");
 const crypto = require("crypto");
 const mongoose = require("mongoose");
 const GridFsStorage = require("multer-gridfs-storage");
+const Grid = require("gridfs-stream");
 
-var Grid = require("gridfs-stream");
 Grid.mongo = mongoose.mongo;
 
-// .env
 require("dotenv").config();
 const uri = process.env.ATLAS_URI;
 
@@ -52,10 +49,12 @@ const storage = new GridFsStorage({
 
 const upload = multer({ storage: storage });
 
-// POST add a document
-router.post("/user/", upload.any("files"), (req, res) => {
-  //.any() : upload any amount of files
-
+/**
+ * POST an image for _id (username)
+ * @param req { _id }
+ * @return user
+ */
+router.post("/upload/", upload.any("files"), (req, res) => {
   var { _id, desc } = req.body;
   if (desc === undefined) desc = "";
 
@@ -79,7 +78,29 @@ router.post("/user/", upload.any("files"), (req, res) => {
     .catch((err) => res.status(400).json("error: " + err));
 });
 
-// GET a document
+/**
+ * GET the id of a random image uploaded by _id (username)
+ * @param req { _id }
+ * @return random img id
+ */
+router.route("/random/:id").get((req, res) => {
+  User.findById(req.params.id)
+    .then((user) => {
+      const length = user.imgs.length;
+
+      if (length > 0) {
+        const img_id = user.imgs[Math.floor(Math.random() * length)]._id;
+        res.json(img_id);
+      }
+    })
+    .catch((err) => res.status(400).json("error: " + err));
+});
+
+/**
+ * GET the img of a document based on _id
+ * @param req { _id }
+ * @return image data
+ */
 router.get("/get/:id", (req, res) => {
   gfs
     .find({
@@ -88,18 +109,28 @@ router.get("/get/:id", (req, res) => {
     .toArray((err, files) => {
       if (!files || files.length === 0) {
         return res.status(404).json({
-          err: "no files exist",
+          err: "no such files exist",
         });
       }
       gfs.openDownloadStream(mongoose.Types.ObjectId(req.params.id)).pipe(res);
     });
 });
 
-// POST a document
-router.post("/delete/:id", (req, res) => {
-  gfs.delete(new mongoose.Types.ObjectId(req.params.id), (err, data) => {
-    if (err) return res.status(404).json({ err: err.message });
-    res.json("document deleted");
+/**
+ * DELETE existing user
+ * @param req { _id }
+ * @return
+ */
+router.route("/delete/user/:id").delete((req, res) => {
+  User.findOneAndDelete(req.params.id).then((user) => {
+    user.imgs
+      .forEach((img) => {
+        gfs.delete(new mongoose.Types.ObjectId(img._id), (err, data) => {
+          if (err) return res.status(404).json({ err: err.message });
+          res.json("document deleted");
+        });
+      })
+      .catch((err) => res.status(400).json("error: " + err));
   });
 });
 
