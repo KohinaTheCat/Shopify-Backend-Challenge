@@ -98,7 +98,7 @@ Form Data:
 
 ```json
 "_id": "_id you get from logging in or signing up"
-"files": [array of files]
+"files": ["array of files"]
 "desc": "description of the images"
 ```
 
