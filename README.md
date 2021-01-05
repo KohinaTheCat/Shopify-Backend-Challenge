@@ -1,6 +1,6 @@
 #### Shopify Challenge for the Backend Developer Position (2020)
 
-Candidate: Clara Chick (https://clarachick.me/)
+Candidate: [Clara Chick](https://clarachick.me/)
 
 #### Dependencies and Technologies:
 
@@ -30,6 +30,17 @@ ADD and  DELETE image(s).
 All successful returns will have status of `200`. Else status would be `400` with various error messages.
 
 Use with [Insomnia](https://insomnia.rest/) or [Postman](https://www.postman.com/).
+
+
+
+test credentials you can use:
+
+```json
+username: clara
+password: password
+```
+
+> note: these credentials are publicly accessible, thus the data from this account are not being accounted for
 
 #### Endpoints:
 
@@ -97,9 +108,10 @@ Form Data:
 
 ```json
 [
-  "5ff3da0ed03546213c542625",
-  "5ff3da4fd03546213c542627",
-  "5ff3da68d03546213c54262a"
+  "5ff3e90119755e12309ed50b",
+  "5ff3e91719755e12309ed50e",
+  "5ff3e92a19755e12309ed513",
+  "5ff3e93419755e12309ed517"
 ]
 ```
 
@@ -132,8 +144,8 @@ JSON Body:
 
 ```json
 {
-  "image": "5ff3da0ed03546213c542625",
-  "desc": "stunning sunset"
+  "image": "5ff3e91719755e12309ed50e",
+  "desc": "MLH Fellowship acceptance"
 }
 ```
 
