@@ -12,15 +12,21 @@ const saltFactor = 10;
  * @property {[Object]}   images            array to store user images 
  */
 const userSchema = new Schema({
-  _id: {
+  username: {
     type: String,
-    trim: true,
+    lowercase: true,
+    index: {unique: true},
+    unique: true,
+    minlength: 3,
+    required: "username is reqiured",
   },
   password: {
     type: String,
     required: "password is required",
   },
-  imgs: [{ _id: String, desc: String}],
+  // parallel arrays have lowest O(n) time
+  imgs: [String],
+  desc: [String]
 });
 
 //comparing password entered

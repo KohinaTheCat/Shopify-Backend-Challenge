@@ -6,10 +6,10 @@ let User = require("../models/user");
  * @param req { _id, password }
  * @return user._id
  */
-router.route("/").post((req, res) => {
-  const { _id, password } = req.body;
+router.route("/signup").post((req, res) => {
+  const { username, password } = req.body;
   const newUser = new User({
-    _id,
+    username,
     password,
     imgs: [],
   });
@@ -25,14 +25,14 @@ router.route("/").post((req, res) => {
  * @param req { id }
  * @return user if passwords match, false if passwords do not match
  */
-router.route("/login/:id").post((req, res) => {
-  const { password } = req.body;
-  User.findById(req.params.id)
+router.route("/login").post((req, res) => {
+  const { password, username } = req.body;
+  User.findOne({ username: username })
     .then((user) => {
       user.comparePassword(password, function (err, isMatch) {
         // because password is salted
         if (err) return res.status(400).json(err);
-        return res.json(isMatch ? user : isMatch);
+        return res.json(isMatch ? user._id : isMatch);
       });
     })
     .catch((err) => res.status(400).json(`Error: User Not Found`));

@@ -29,7 +29,7 @@ const UserRouter = require("./routes/user");
 app.use("/api/user", UserRouter);
 // routes dealing with file uploads
 const FilesRouter = require("./routes/files");
-app.use("/api/files", FilesRouter);
+app.use("/api/user/files", FilesRouter);
 
 const PORT = 7000;
 

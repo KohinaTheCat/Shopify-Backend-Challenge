@@ -27,57 +27,171 @@ ADD and  DELETE image(s).
 
 #### Usage:
 
-Account management:
+All successful returns will have status of `200`. Else status would be `400` with various error messages.
 
-1. create an account
+Use with [Insomnia](https://insomnia.rest/) or [Postman](https://www.postman.com/).
+
+#### Endpoints:
+
+1. account management
+
+   a. creating an account
 
 **Endpoint:** 
 
-`GET` `http://localhost:7000/api/user/`
+##### `POST` `http://localhost:7000/api/user/signup/`
 
 JSON Body:
 
 ```json
 {
-    "_id": "some id",
+    "username": "some unique username",
     "password": "some password"
 }
 ```
 
-`Returns`: user _id
+**Returns**: `user._id` which should be used for all further requests 
+
+> (to prevent a user from deleting images from another user)
+
+<hr/>
+
+​				b. logging into an existing account
+
+**Endpoint:** 
+
+##### `POST` `http://localhost:7000/api/user/login/`
+
+JSON Body:
+
+```json
+{
+    "username": "some username",
+    "password": "some password"
+}
+```
+
+**Returns**: `user._id` which should be used for all further requests 
+
+> (to prevent a user from deleting images from another user)
+
+<hr/>
 
 2. upload some files
 
 **Endpoint:** 
 
-`POST` `http://localhost:7000/api/files/upload/`
+##### `POST` `http://localhost:7000/api/user/files/upload/`
 
 Form Data:
 
 ```json
+"_id": "_id you get from logging in or signing up"
 "files": [{array of files}]
 "desc": "description of the images"
 ```
 
-`Returns`: user 
+**Returns**: `user.imgs` which is an array of image id's
 
-3. get some random file id to reminisce about 
+**Sample Return**:  
+
+```json
+[
+  "5ff3da0ed03546213c542625",
+  "5ff3da4fd03546213c542627",
+  "5ff3da68d03546213c54262a"
+]
+```
+
+<hr/>
+
+3. get some random `image _id` to reminisce about 
 
 **Endpoint:** 
 
-`GET` `http://localhost:7000/api/files/random/:id`
+##### `GET` `http://localhost:7000/api/user/files/reminisce `
 
-`id`: user _id
+JSON Body:
 
-`Returns`: image id that user _id uploaded
+```json
+{
+    "_id": "_id you get from logging in or signing up"
+}
+```
+
+**Returns**: 
+
+```json
+{
+    "image": "image id which is used to get the image",
+    "desc": "description of the image"
+}
+```
+
+**Sample Return**: 
+
+```json
+{
+  "image": "5ff3da0ed03546213c542625",
+  "desc": "stunning sunset"
+}
+```
+
+<hr/>
+
+4. get image (if you have access)
 
 **Endpoint:** 
 
-`GET` `http://localhost:7000/api/files/get/:id`
+##### `GET` `http://localhost:7000/api/user/files/get/:imgId`
 
-`id`: fileid
+- `imgId`: `image _id`
 
-`Returns`: file
+JSON Body: 
+
+```json
+{
+    "_id": "_id you get from logging in or signing up"
+}
+```
+
+**Returns**: the image corresponding to `imgId`
+
+> error: if image wasn't uploaded by _id
+
+<hr/>
+
+5. delete image (if you have access)
+
+**Endpoint:** 
+
+##### `DELETE` `http://localhost:7000/api/user/files/delete/:imgId`
+
+- `imgId`: `image _id`
+
+JSON Body: 
+
+```json
+{
+    "_id": "_id you get from logging in or signing up"
+}
+```
+
+**Returns**: the image corresponding to `imgId`
+
+> error: if image wasn't uploaded by _id
+
+<hr/>
+
+6. delete account, and all files related to it
+
+**Endpoint:** 
+
+##### `DELETE` `http://localhost:7000/api/user/files/delete/account/:id`
+
+- `id`: `_id you get from logging in or signing up`
+
+**Returns**: Success or Failure
 
 <hr/>
 

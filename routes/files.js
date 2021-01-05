@@ -54,7 +54,7 @@ const upload = multer({ storage: storage });
  * @param req { _id }
  * @return user
  */
-router.post("/upload/", upload.any("files"), (req, res) => {
+router.post("/upload", upload.any("files"), (req, res) => {
   var { _id, desc } = req.body;
   if (desc === undefined) desc = "";
 
@@ -62,18 +62,12 @@ router.post("/upload/", upload.any("files"), (req, res) => {
     .then((user) => {
       if (req.files === undefined) return res.status(400).json("error: ", req);
 
-      user.imgs = user.imgs.concat(
-        req.files.map((img) => {
-          const container = {};
+      req.files.forEach((img) => {
+        user.imgs.push(img.id);
+        user.desc.push(desc);
+      });
 
-          container._id = img.id;
-          container.desc = desc;
-
-          return container;
-        })
-      );
-
-      user.save().then((user) => res.json(user));
+      user.save().then((user) => res.json(user.imgs));
     })
     .catch((err) => res.status(400).json("error: " + err));
 });
@@ -83,14 +77,15 @@ router.post("/upload/", upload.any("files"), (req, res) => {
  * @param req { _id }
  * @return random img id
  */
-router.route("/random/:id").get((req, res) => {
-  User.findById(req.params.id)
+router.route("/reminisce").get((req, res) => {
+  var { _id } = req.body;
+  User.findById(_id)
     .then((user) => {
       const length = user.imgs.length;
-
+      const index = Math.floor(Math.random() * length);
       if (length > 0) {
-        const img_id = user.imgs[Math.floor(Math.random() * length)]._id;
-        res.json(img_id);
+        const img_id = user.imgs[index];
+        res.json({ image: img_id, desc: user.desc[index] });
       }
     })
     .catch((err) => res.status(400).json("error: " + err));
@@ -101,19 +96,32 @@ router.route("/random/:id").get((req, res) => {
  * @param req { _id }
  * @return image data
  */
-router.get("/get/:id", (req, res) => {
-  gfs
-    .find({
-      _id: mongoose.Types.ObjectId(req.params.id),
-    })
-    .toArray((err, files) => {
-      if (!files || files.length === 0) {
-        return res.status(404).json({
-          err: "no such files exist",
-        });
+router.get("/get/:imgId", (req, res) => {
+  var { _id } = req.body;
+  const imgId = req.params.imgId;
+
+  User.findById(_id)
+    .then((user) => {
+      const index = user.imgs.indexOf(imgId);
+      if (index === -1) {
+        res.status(400).json("you do not have access");
+        return;
       }
-      gfs.openDownloadStream(mongoose.Types.ObjectId(req.params.id)).pipe(res);
-    });
+
+      gfs
+        .find({
+          _id: mongoose.Types.ObjectId(imgId),
+        })
+        .toArray((err, files) => {
+          if (!files || files.length === 0) {
+            return res.status(404).json({
+              err: "no such files exist",
+            });
+          }
+          gfs.openDownloadStream(mongoose.Types.ObjectId(imgId)).pipe(res);
+        });
+    })
+    .catch((err) => res.status(400).json("error: " + err));
 });
 
 /**
@@ -121,18 +129,29 @@ router.get("/get/:id", (req, res) => {
  * @param req { fid, id }
  * @return
  */
-router.route("/deleteOne/:fid/user/:id").delete((req, res) => {
-  User.findById(req.params.id)
+router.route("/delete/:imgId").delete((req, res) => {
+  var { _id } = req.body;
+  const imgId = req.params.imgId;
+
+  User.findById(_id)
     .then((user) => {
-      user.imgs = user.imgs;
-      user.imgs = user.imgs.filter((img) => img._id === req.params.fid);
-      console.log(user.imgs.map((img) => img._id !== req.params.fid));
-      gfs.delete(new mongoose.Types.ObjectId(req.params.fid), (err, data) => {
-        if (err) return res.status(404).json({ err: err.message });
-        res.json("document deleted");
+      const index = user.imgs.indexOf(imgId);
+      if (index === -1) {
+        res.status(400).json("you do not have access");
+        return;
+      }
+
+      user.desc.splice(index, 1);
+      user.imgs.splice(index, 1);
+
+      user.save().then((response) => {
+        gfs.delete(new mongoose.Types.ObjectId(imgId), (err, data) => {
+          if (err) return res.status(404).json({ err: err.message });
+          res.json("document deleted");
+        });
       });
     })
-    .catch((err) => res.status(400).json("error: " + err));
+    .catch((err) => res.status(400).json("error: you do not have access" + err));
 });
 
 /**
@@ -140,7 +159,7 @@ router.route("/deleteOne/:fid/user/:id").delete((req, res) => {
  * @param req { _id }
  * @return
  */
-router.route("/delete/user/:id").delete((req, res) => {
+router.route("/delete/account/:id").delete((req, res) => {
   User.findOneAndDelete(req.params.id).then((user) => {
     user.imgs
       .forEach((img) => {
