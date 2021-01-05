@@ -87,7 +87,7 @@ Form Data:
 
 ```json
 "_id": "_id you get from logging in or signing up"
-"files": [{array of files}]
+"files": [array of files]
 "desc": "description of the images"
 ```
 
@@ -195,41 +195,39 @@ JSON Body:
 
 <hr/>
 
+#### Explanation:
+
 ##### Add image(s) to the repository.
 
-- [one / bulk / enormous amount of images](https://github.com/KohinaTheCat/Rememorer-Shopify-Backend-Developer-Challenge/blob/master/backend/routes/files.js#L57)
+- one / bulk / enormous amount of images
 
 `upload.any()` - can upload any amount of files at once
 
-- [private or public (permissions)](https://github.com/KohinaTheCat/Rememorer-Shopify-Backend-Developer-Challenge/blob/master/routes/user.js#L28)
+- private or public (permissions)
 
-(as a full-stack app) the user must login before they can access images attached to their account. As displayed in the link above, the password of the account is salted and hashed. 
+the user must login/signup before to get their unique `_id`. This is required to upload/delete files.
 
-- [secure uploading and stored images](https://github.com/KohinaTheCat/Rememorer-Shopify-Backend-Developer-Challenge/blob/master/.env)
+- secure uploading and stored images
 
 For this challenge, I didn't add `.env` to the `.gitignore`, but typically the database URI is to be kept secret to ensure security. 
 
+The password of the account is salted and hashed, so it's not stored in DB in plain text. 
+
 ##### DELETE image(s)
 
-- [one / bulk / selected / all images]()
+- one / bulk / selected / all images
 
-When a user decides to delete their account, their images are deleted too.
+When a user decides to delete their account, all of their images are deleted too.
 
 You can delete individual files for an account.
 
 - Prevent a user deleting images from another user (access control)
 
-(as a full-stack app) the user is meant to login
-
-(as an API) add password verification (see [here](https://github.com/KohinaTheCat/Rememorer-Shopify-Backend-Developer-Challenge/blob/master/routes/user.js#L28))
-
 - secure deletion of images
 
-I trust Mongo :heart:
+I trust Mongo :heart: to securely delete the files permanently
 
 <hr/>
-
-:sob:
 
 <img width="100%" src="./_imgs/home.PNG"/>
 

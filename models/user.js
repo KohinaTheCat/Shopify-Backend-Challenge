@@ -15,16 +15,15 @@ const userSchema = new Schema({
   username: {
     type: String,
     lowercase: true,
-    index: {unique: true},
+    dropDubs: true,
     unique: true,
     minlength: 3,
-    required: "username is reqiured",
+    required: true,
   },
   password: {
     type: String,
     required: "password is required",
   },
-  // parallel arrays have lowest O(n) time
   imgs: [String],
   desc: [String]
 });
