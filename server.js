@@ -31,7 +31,7 @@ app.use("/api/user", UserRouter);
 const FilesRouter = require("./routes/files");
 app.use("/api/user/files", FilesRouter);
 
-const PORT = 7000 || process.env.PORT;
+const PORT = 5000 || process.env.PORT;
 
 app.listen(PORT, () => {
   console.log(`server is running on port: ${PORT}`);
