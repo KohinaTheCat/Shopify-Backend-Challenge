@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const path = require('path');
 
 /* The database credentials are stored in an .env. For the sake of this project, I will exclude this from the gitignore. */
 require("dotenv").config();
@@ -32,6 +33,10 @@ const FilesRouter = require("./routes/files");
 app.use("/api/user/files", FilesRouter);
 
 const PORT = 5000 || process.env.PORT;
+
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname + '/index.html'));
+});
 
 app.listen(PORT, () => {
   console.log(`server is running on port: ${PORT}`);
