@@ -44,6 +44,7 @@ password: password
 ```
 
 > note: these credentials are publicly accessible, thus the data from this account are not being accounted for.
+
 > another note: endoints run locally are on `http://localhost:5000`
 
 #### Endpoints:
