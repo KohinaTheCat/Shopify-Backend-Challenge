@@ -36,11 +36,7 @@ app.get('*', function(req, res){
   res.json("hello");
 });
 
-const PORT = 5000 || process.env.PORT;
-
-// app.get('*', function(req, res) {
-//   res.sendFile(path.join(__dirname + '/index.html'));
-// });
+const PORT =  process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`server is running on port: ${PORT}`);
