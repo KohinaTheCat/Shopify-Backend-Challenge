@@ -32,11 +32,15 @@ app.use("/api/user", UserRouter);
 const FilesRouter = require("./routes/files");
 app.use("/api/user/files", FilesRouter);
 
+app.get('/', function(req, res){
+  res.json("hello");
+});
+
 const PORT = 5000 || process.env.PORT;
 
-app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname + '/index.html'));
-});
+// app.get('*', function(req, res) {
+//   res.sendFile(path.join(__dirname + '/index.html'));
+// });
 
 app.listen(PORT, () => {
   console.log(`server is running on port: ${PORT}`);
