@@ -2,6 +2,9 @@
 
 Candidate: [Clara Chick](https://clarachick.me/)
 
+#### Deployed at:
+https://clara-chick-shopify-challenge.herokuapp.com/
+
 #### Dependencies and Technologies:
 
 - node (v15.4.0)
@@ -40,7 +43,8 @@ username: clara
 password: password
 ```
 
-> note: these credentials are publicly accessible, thus the data from this account are not being accounted for
+> note: these credentials are publicly accessible, thus the data from this account are not being accounted for.
+> another note: endoints run locally are on `http://localhost:5000`
 
 #### Endpoints:
 
@@ -50,7 +54,7 @@ password: password
 
 **Endpoint:** 
 
-##### `POST` `http://localhost:7000/api/user/signup/`
+##### `POST` `https://clara-chick-shopify-challenge.herokuapp.com/api/user/signup/`
 
 JSON Body:
 
@@ -71,7 +75,7 @@ JSON Body:
 
 **Endpoint:** 
 
-##### `POST` `http://localhost:7000/api/user/login/`
+##### `POST` `https://clara-chick-shopify-challenge.herokuapp.com/api/user/login/`
 
 JSON Body:
 
@@ -92,7 +96,7 @@ JSON Body:
 
 **Endpoint:** 
 
-##### `POST` `http://localhost:7000/api/user/files/upload/`
+##### `POST` `https://clara-chick-shopify-challenge.herokuapp.com/api/user/files/upload/`
 
 Form Data:
 
@@ -121,7 +125,7 @@ Form Data:
 
 **Endpoint:** 
 
-##### `GET` `http://localhost:7000/api/user/files/reminisce `
+##### `GET` `https://clara-chick-shopify-challenge.herokuapp.com/api/user/files/reminisce `
 
 JSON Body:
 
@@ -155,7 +159,7 @@ JSON Body:
 
 **Endpoint:** 
 
-##### `GET` `http://localhost:7000/api/user/files/get/:imgId`
+##### `GET` `https://clara-chick-shopify-challenge.herokuapp.com/api/user/files/get/:imgId`
 
 - `imgId`: `image _id`
 
@@ -177,7 +181,7 @@ JSON Body:
 
 **Endpoint:** 
 
-##### `DELETE` `http://localhost:7000/api/user/files/delete/:imgId`
+##### `DELETE` `https://clara-chick-shopify-challenge.herokuapp.com/api/user/files/delete/:imgId`
 
 - `imgId`: `image _id`
 
@@ -199,7 +203,7 @@ JSON Body:
 
 **Endpoint:** 
 
-##### `DELETE` `http://localhost:7000/api/user/files/delete/account/:id`
+##### `DELETE` `https://clara-chick-shopify-challenge.herokuapp.com/api/user/files/delete/account/:id`
 
 - `id`: `_id you get from logging in or signing up`
 
