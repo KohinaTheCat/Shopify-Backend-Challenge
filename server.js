@@ -33,7 +33,7 @@ const FilesRouter = require("./routes/files");
 app.use("/api/user/files", FilesRouter);
 
 app.get('*', function(req, res){
-  res.json("hello");
+  res.json("Hi!! Refer to https://github.com/KohinaTheCat/Shopify-Backend-Challenge-Rememorer for usage.");
 });
 
 const PORT =  process.env.PORT || 5000;
