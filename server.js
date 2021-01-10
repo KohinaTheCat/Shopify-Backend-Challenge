@@ -34,7 +34,7 @@ app.use("/api/user/files", FilesRouter);
 
 const PORT = 5000 || process.env.PORT;
 
-app.get('/', function(req, res) {
+app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
 });
 
