@@ -32,7 +32,7 @@ app.use("/api/user", UserRouter);
 const FilesRouter = require("./routes/files");
 app.use("/api/user/files", FilesRouter);
 
-app.get('/', function(req, res){
+app.get('*', function(req, res){
   res.json("hello");
 });
 
