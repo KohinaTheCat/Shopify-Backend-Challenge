@@ -12,6 +12,8 @@ https://clara-chick-shopify-challenge.herokuapp.com/
 
 - MongoDB
 
+> note: the `.env` is intentionally kept on the repo. for the sake of this challenge
+
 Install before use: `npm i mongoose mongoose-gridfs gridfs-stream multer express node dotenv cors`
 
 **The Task**: build an image repository. 
